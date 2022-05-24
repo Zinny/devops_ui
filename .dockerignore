@@ -7,4 +7,5 @@ log
 yamls
 *.yaml
 Dockerfile
+.dockerignore
 *.log
