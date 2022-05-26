@@ -40,14 +40,20 @@ pipeline {
                     reuseNode true
                         }
                     }
-            // steps {
-            //  }
+            steps {
+                script {
+                    echo 'push the image to docker hub' 
+                }
+             }
         }     
         stage('Remove local docker image') {
-            // steps{
+            steps{
+                script {
+                    echo 'push the image to docker hub' 
+                }
                 // sh "docker rmi $imageName:latest"
                 // sh "docker rmi $imageName:$BUILD_NUMBER"
-            // }
+            }
         }
     }
 }
