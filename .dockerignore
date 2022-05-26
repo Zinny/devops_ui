@@ -8,5 +8,7 @@ yaml
 *.yaml
 Dockerfile
 .dockerignore
-*.log
 *.md
+*.log
+*.txt
+Jenkinsfile
