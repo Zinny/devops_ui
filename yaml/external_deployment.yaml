@@ -6,14 +6,14 @@ spec:
   selector:
     matchLabels:
       app: ui-svc
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
         app: ui-svc
     spec:
       containers:
-      - name: ui-svc
+      - name: ui-svc-container
         image: beachcoder/external:devops.6
         env:
           - name: SERVER
