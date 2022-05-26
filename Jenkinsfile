@@ -40,14 +40,14 @@ pipeline {
                     reuseNode true
                         }
                     }
-            steps {
-             }
+            // steps {
+            //  }
         }     
         stage('Remove local docker image') {
-            steps{
+            // steps{
                 // sh "docker rmi $imageName:latest"
                 // sh "docker rmi $imageName:$BUILD_NUMBER"
-            }
+            // }
         }
     }
 }
