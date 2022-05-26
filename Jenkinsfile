@@ -15,24 +15,34 @@ pipeline {
                 }
             }
             steps {
-                echo 'Retrieve source from github. run npm install and npm test' 
+                echo 'Retrieve source from github' 
                 git branch: 'master',
-                    url: 'https://github.com/beachedcoder/devops_ui.git'
-                echo 'repo files'
+                    url: 'https://github.com/beachedcoder/devops_internal_svc.git'
+                echo 'showing files from repo?' 
                 sh 'ls -a'
+                echo 'install dependencies' 
+                sh 'npm install'
+                echo 'Run tests'
+                sh 'npm test'
+                echo 'Testing completed'
             }
         }
         stage('Building image') {
             steps{
                 script {
-                    echo 'build the image' 
+                    echo 'building image' 
+                    dockerImage = docker.build("${env.imageName}:${env.BUILD_ID}")
+                    echo 'image built'
                 }
             }
             }
         stage('Push Image') {
             steps{
                 script {
-                    echo 'push the image to docker hub' 
+                    echo 'pushing the image to docker hub' 
+                    docker.withRegistry('',registryCredential){
+                        dockerImage.push("${env.BUILD_ID}")
+                    }
                 }
             }
         }     
@@ -45,18 +55,17 @@ pipeline {
                         }
                     }
             steps {
-                script {
-                    echo 'push the image to docker hub' 
-                }
+                echo 'Get cluster credentials'
+                sh 'gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project roidtc-may2022-u300'
+                sh "kubectl set image deployment/ui-svc-deployment ui-svc-container=${env.imageName}:${env.BUILD_ID}"
+
              }
         }     
         stage('Remove local docker image') {
             steps{
-                script {
-                    echo 'push the image to docker hub' 
-                }
+                echo "pending"
                 // sh "docker rmi $imageName:latest"
-                // sh "docker rmi $imageName:$BUILD_NUMBER"
+                sh "docker rmi ${env.imageName}:${env.BUILD_ID}"
             }
         }
     }
